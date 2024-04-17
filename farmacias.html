@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <div>
+        <canvas id="myChart"></canvas>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        const municipiosDeMallorca = [
+            "Alaró",
+            "Alcúdia",
+            "Algaida",
+            "Andratx",
+            "Ariany",
+            "Artà",
+            "Banyalbufar",
+            "Binissalem",
+            "Búger",
+            "Bunyola",
+            "Calvià",
+            "Campanet",
+            "Campos",
+            "Capdepera",
+            "Consell",
+            "Costitx",
+            "Deià",
+            "Escorca",
+            "Esporles",
+            "Estellencs",
+            "Felanitx",
+            "Fornalutx",
+            "Inca",
+            "Lloret de Vistalegre",
+            "Lloseta",
+            "Llubí",
+            "Llucmajor",
+            "Manacor",
+            "Mancor de la Vall",
+            "Maó",
+            "Maria de la Salut",
+            "Marratxí",
+            "Montuïri",
+            "Muro",
+            "Palma",
+            "Petra",
+            "Pollença",
+            "Porreres",
+            "Puigpunyent",
+            "Salines",
+            "Sant Joan",
+            "Sant Llorenç des Cardassar",
+            "Santa Eugènia",
+            "Santa Margalida",
+            "Santa Maria del Camí",
+            "Santanyí",
+            "Selva",
+            "Sencelles",
+            "Sineu",
+            "Sóller",
+            "Son Servera",
+            "Valldemossa",
+            "Vilafranca de Bonany",
+        ];
+        const numeroFarmacias = new Array(municipiosDeMallorca.length).fill(0);
+
+        const xhttp = new XMLHttpRequest();
+        xhttp.onload = function () {
+            let f = JSON.parse(this.responseText);
+
+            for (let i = 0; i < f.length; i++) {
+                const municipioJson = f[i].municipi;
+
+                const index = municipiosDeMallorca.indexOf(municipioJson);
+                if (index !== -1) {
+                    // Incrementar en uno el valor en el array de números en la misma posición correspondiente al municipio
+                    numeroFarmacias[index]++;
+                }
+            }
+            const ctx = document.getElementById('myChart'); 1
+
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: municipiosDeMallorca,
+                    datasets: [{
+                        label: '# of Votes',
+                        data: numeroFarmacias,
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+        xhttp.open("GET", "https://catalegdades.caib.cat/resource/euss-d827.json");
+        xhttp.send();
+
+
+    </script>
+</body>
+
+</html>
